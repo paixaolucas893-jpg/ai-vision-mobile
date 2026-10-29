@@ -1,7 +1,6 @@
+const CACHE_NAME = "ai-vision-mobile-v3";
 
-const CACHE = "ai-vision-mobile-v1";
-
-const ASSETS = [
+const APP_FILES = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
@@ -9,22 +8,25 @@ const ASSETS = [
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(ASSETS))
-  );
   self.skipWaiting();
+
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache =>
+      cache.addAll(APP_FILES)
+    )
+  );
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys.filter(key => key !== CACHE)
+        keys
+          .filter(key => key !== CACHE_NAME)
           .map(key => caches.delete(key))
       )
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", event => {
@@ -32,10 +34,12 @@ self.addEventListener("fetch", event => {
 
   if (request.method !== "GET") return;
 
-  const url = new URL(request.url);
-
-  // Apenas arquivos da própria aplicação.
-  if (url.origin !== self.location.origin) return;
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request).catch(() => caches.match("./index.html"))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(request).then(cached =>
