@@ -228,6 +228,8 @@ const categories = [
 ];
 
 const meters = {};
+const smoothedScores = {};
+const SMOOTHING = 0.35;
 
 for (const [name] of categories) {
   const key = name.replaceAll(" ", "_");
@@ -248,6 +250,9 @@ for (const [name] of categories) {
 }
 
 function resetMeters() {
+  for (const name of Object.keys(smoothedScores)) {
+    delete smoothedScores[name];
+  }
   for (const item of Object.values(meters)) {
     item.value.textContent = "—";
     item.bar.style.width = "0%";
@@ -265,9 +270,16 @@ function updateMeters(blendshapes) {
     const values = keys.map(k => scores[k] ?? 0);
     const average = values.reduce((a,b) => a+b, 0) /
       values.length;
-    const percent = Math.round(
-      Math.max(0, Math.min(1, average)) * 100
-    );
+    const rawScore = Math.max(0, Math.min(1, average));
+
+    if (!(name in smoothedScores)) {
+      smoothedScores[name] = rawScore;
+    } else {
+      smoothedScores[name] += SMOOTHING *
+        (rawScore - smoothedScores[name]);
+    }
+
+    const percent = Math.round(smoothedScores[name] * 100);
     meters[name].value.textContent = percent + "/100";
     meters[name].bar.style.width = percent + "%";
   }
