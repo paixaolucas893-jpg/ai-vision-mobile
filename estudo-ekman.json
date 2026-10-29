@@ -1,0 +1,34 @@
+[
+  {
+    "id": "sorriso",
+    "titulo": "Movimento de sorriso",
+    "indicador": "Sorriso",
+    "descricao": "Observa a elevação lateral dos cantos da boca.",
+    "estudo": "Ekman discute diferentes configurações de sorriso e a importância de observar também a região dos olhos.",
+    "cuidado": "Um sorriso isolado não comprova alegria, sinceridade ou qualquer intenção."
+  },
+  {
+    "id": "sobrancelhas",
+    "titulo": "Elevação das sobrancelhas",
+    "indicador": "Sobrancelhas elevadas",
+    "descricao": "Observa mudanças na altura das sobrancelhas.",
+    "estudo": "O formato das sobrancelhas, combinado com olhos e boca, é relevante para a descrição de expressões faciais.",
+    "cuidado": "A elevação pode ocorrer em situações diferentes; não determina uma emoção."
+  },
+  {
+    "id": "palpebras",
+    "titulo": "Fechamento das pálpebras",
+    "indicador": "Olhos fechados",
+    "descricao": "Observa a aproximação das pálpebras.",
+    "estudo": "A região dos olhos participa de diversas configurações faciais descritas nos estudos sobre expressões.",
+    "cuidado": "Piscadas e fechamentos podem ter causas não emocionais."
+  },
+  {
+    "id": "boca",
+    "titulo": "Abertura da mandíbula",
+    "indicador": "Abertura da boca",
+    "descricao": "Observa o movimento de abertura da mandíbula.",
+    "estudo": "A posição da boca é um dos elementos examinados em combinações de movimentos faciais.",
+    "cuidado": "Abrir a boca não identifica, por si só, surpresa ou medo."
+  }
+]
