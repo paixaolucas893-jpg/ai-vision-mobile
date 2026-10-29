@@ -284,7 +284,7 @@ async function loadModel() {
       delegate: "GPU"
     },
     runningMode: "VIDEO",
-    numFaces: 3,
+    numFaces: 1,
     outputFaceBlendshapes: true,
     outputFacialTransformationMatrixes: false
   };
@@ -360,7 +360,7 @@ function render() {
 
     if (faces.length) {
       $("status").textContent = "Rosto detectado";
-      if ($("showMesh").checked) faces.forEach(drawFace);
+      if ($("showMesh").checked) drawFace(faces[0]);
       updateMeters(result.faceBlendshapes?.[0]);
     } else {
       $("status").textContent = "Procurando rosto";
