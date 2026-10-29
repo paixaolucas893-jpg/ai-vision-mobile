@@ -1,4 +1,4 @@
-﻿
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -7,7 +7,7 @@
  content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1424">
 <meta name="description"
- content="LaboratÃ³rio de visÃ£o computacional para Android">
+ content="Laboratório de visão computacional para Android">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icon.svg">
 <title>AI Vision Lab Mobile</title>
@@ -113,6 +113,23 @@ button:disabled { opacity: .5; }
 .status { color: #74eac9; }
 small { color: #9db0c8; line-height: 1.5; }
 label { display: block; margin: 12px 0; }
+
+/* Enquadramento mobile sem recorte */
+@media (max-width: 700px) {
+  .viewer {
+    aspect-ratio: 4 / 3;
+    max-height: 30dvh;
+  }
+
+  .viewer video,
+  .viewer canvas {
+    object-fit: contain;
+  }
+
+  .viewer {
+    background: #050b14;
+  }
+}
 </style>
 </head>
 
@@ -121,24 +138,24 @@ label { display: block; margin: 12px 0; }
 <header>
   <div class="eyebrow">COMPUTER VISION LAB</div>
   <h1>AI Vision Lab Mobile</h1>
-  <p>Reconhecimento de caracterÃ­sticas faciais em tempo real</p>
+  <p>Reconhecimento de características faciais em tempo real</p>
 </header>
 
 <section class="viewer">
   <video id="video" autoplay muted playsinline></video>
   <canvas id="overlay"></canvas>
-  <div class="chip" id="cameraStatus">CÃ¢mera desligada</div>
+  <div class="chip" id="cameraStatus">Câmera desligada</div>
 </section>
 
 <div class="controls">
   <button class="primary" id="startBtn">
-    Iniciar cÃ¢mera
+    Iniciar câmera
   </button>
   <button id="flipBtn" disabled>
-    Alternar cÃ¢mera
+    Alternar câmera
   </button>
   <button id="stopBtn" disabled>
-    Parar cÃ¢mera
+    Parar câmera
   </button>
   <button id="installBtn" hidden>
     Instalar aplicativo
@@ -157,19 +174,19 @@ label { display: block; margin: 12px 0; }
 </section>
 
 <section class="panel">
-  <h2>AnÃ¡lise de expressÃµes</h2>
+  <h2>Análise de expressões</h2>
   <div id="metrics"></div>
   <small>
-    PontuaÃ§Ãµes de ativaÃ§Ã£o de blendshapes, de 0 a 100.
-    NÃ£o representam probabilidades de emoÃ§Ãµes.
+    Pontuações de ativação de blendshapes, de 0 a 100.
+    Não representam probabilidades de emoções.
   </small>
 </section>
 
 <section class="panel">
   <h2>Privacidade</h2>
   <small>
-    Os quadros da cÃ¢mera sÃ£o processados localmente.
-    Este aplicativo nÃ£o envia nem armazena imagens.
+    Os quadros da câmera são processados localmente.
+    Este aplicativo não envia nem armazena imagens.
     O carregamento inicial do modelo necessita de internet.
   </small>
 </section>
@@ -213,7 +230,7 @@ for (const [name] of categories) {
   const container = document.createElement("div");
   container.innerHTML = `
     <div class="metric">
-      <span>${name}</span><b id="value_${key}">â€”</b>
+      <span>${name}</span><b id="value_${key}">—</b>
     </div>
     <div class="track">
       <div class="fill" id="bar_${key}"></div>
@@ -228,7 +245,7 @@ for (const [name] of categories) {
 
 function resetMeters() {
   for (const item of Object.values(meters)) {
-    item.value.textContent = "â€”";
+    item.value.textContent = "—";
     item.bar.style.width = "0%";
   }
 }
@@ -277,7 +294,7 @@ async function loadModel() {
       vision, options
     );
   } catch (gpuError) {
-    console.warn("GPU indisponÃ­vel; usando CPU", gpuError);
+    console.warn("GPU indisponível; usando CPU", gpuError);
     options.baseOptions.delegate = "CPU";
     landmarker = await FaceLandmarker.createFromOptions(
       vision, options
@@ -369,7 +386,7 @@ async function startCamera() {
 
   try {
     if (!navigator.mediaDevices?.getUserMedia) {
-      throw new Error("CÃ¢mera requer HTTPS ou localhost.");
+      throw new Error("Câmera requer HTTPS ou localhost.");
     }
 
     await loadModel();
@@ -396,7 +413,7 @@ async function startCamera() {
     frames = 0;
 
     $("cameraStatus").textContent =
-      facingMode === "user" ? "CÃ¢mera frontal" : "CÃ¢mera traseira";
+      facingMode === "user" ? "Câmera frontal" : "Câmera traseira";
 
     $("flipBtn").disabled = false;
     $("stopBtn").disabled = false;
@@ -420,7 +437,7 @@ function stopCamera() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   $("faceCount").textContent = "0";
   $("fps").textContent = "0";
-  $("cameraStatus").textContent = "CÃ¢mera desligada";
+  $("cameraStatus").textContent = "Câmera desligada";
   $("flipBtn").disabled = true;
   $("stopBtn").disabled = true;
   $("startBtn").disabled = false;
@@ -430,7 +447,7 @@ function stopCamera() {
 $("startBtn").addEventListener("click", startCamera);
 $("stopBtn").addEventListener("click", () => {
   stopCamera();
-  $("status").textContent = "CÃ¢mera parada";
+  $("status").textContent = "Câmera parada";
 });
 
 $("flipBtn").addEventListener("click", async () => {
