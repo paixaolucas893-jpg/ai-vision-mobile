@@ -1,0 +1,21 @@
+
+{
+  "name": "AI Vision Lab Mobile",
+  "short_name": "AI Vision",
+  "description": "Visão computacional facial no Android",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1424",
+  "theme_color": "#0b1424",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
