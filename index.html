@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -7,7 +7,7 @@
  content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1424">
 <meta name="description"
- content="Laboratório de visão computacional para Android">
+ content="LaboratÃ³rio de visÃ£o computacional para Android">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icon.svg">
 <title>AI Vision Lab Mobile</title>
@@ -29,7 +29,7 @@ main {
 }
 header { margin-bottom: 16px; }
 h1 { font-size: 1.45rem; margin: 6px 0; }
-h2 { font-size: 1.05rem; margin: 0 0 16px; }
+h2 { font-size: 1rem; margin: 0 0 10px; }
 p { color: #a9b9d0; }
 .eyebrow {
   color: #63e6c3;
@@ -43,7 +43,7 @@ p { color: #a9b9d0; }
   border: 1px solid #2b405b;
   border-radius: 20px;
   overflow: hidden;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 3;
 }
 video, canvas {
   position: absolute;
@@ -87,8 +87,8 @@ button:disabled { opacity: .5; }
 .panel {
   background: #142238;
   border: 1px solid #2b405b;
-  padding: 18px;
-  margin-top: 14px;
+  padding: 12px;
+  margin-top: 8px;
   border-radius: 18px;
 }
 .metric {
@@ -98,11 +98,11 @@ button:disabled { opacity: .5; }
   font-size: 14px;
 }
 .track {
-  height: 9px;
+  height: 6px;
   background: #2c425a;
   border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 17px;
+  margin-bottom: 8px;
 }
 .fill {
   height: 100%;
@@ -121,24 +121,24 @@ label { display: block; margin: 12px 0; }
 <header>
   <div class="eyebrow">COMPUTER VISION LAB</div>
   <h1>AI Vision Lab Mobile</h1>
-  <p>Reconhecimento de características faciais em tempo real</p>
+  <p>Reconhecimento de caracterÃ­sticas faciais em tempo real</p>
 </header>
 
 <section class="viewer">
   <video id="video" autoplay muted playsinline></video>
   <canvas id="overlay"></canvas>
-  <div class="chip" id="cameraStatus">Câmera desligada</div>
+  <div class="chip" id="cameraStatus">CÃ¢mera desligada</div>
 </section>
 
 <div class="controls">
   <button class="primary" id="startBtn">
-    Iniciar câmera
+    Iniciar cÃ¢mera
   </button>
   <button id="flipBtn" disabled>
-    Alternar câmera
+    Alternar cÃ¢mera
   </button>
   <button id="stopBtn" disabled>
-    Parar câmera
+    Parar cÃ¢mera
   </button>
   <button id="installBtn" hidden>
     Instalar aplicativo
@@ -157,19 +157,19 @@ label { display: block; margin: 12px 0; }
 </section>
 
 <section class="panel">
-  <h2>Análise de expressões</h2>
+  <h2>AnÃ¡lise de expressÃµes</h2>
   <div id="metrics"></div>
   <small>
-    Pontuações de ativação de blendshapes, de 0 a 100.
-    Não representam probabilidades de emoções.
+    PontuaÃ§Ãµes de ativaÃ§Ã£o de blendshapes, de 0 a 100.
+    NÃ£o representam probabilidades de emoÃ§Ãµes.
   </small>
 </section>
 
 <section class="panel">
   <h2>Privacidade</h2>
   <small>
-    Os quadros da câmera são processados localmente.
-    Este aplicativo não envia nem armazena imagens.
+    Os quadros da cÃ¢mera sÃ£o processados localmente.
+    Este aplicativo nÃ£o envia nem armazena imagens.
     O carregamento inicial do modelo necessita de internet.
   </small>
 </section>
@@ -213,7 +213,7 @@ for (const [name] of categories) {
   const container = document.createElement("div");
   container.innerHTML = `
     <div class="metric">
-      <span>${name}</span><b id="value_${key}">—</b>
+      <span>${name}</span><b id="value_${key}">â€”</b>
     </div>
     <div class="track">
       <div class="fill" id="bar_${key}"></div>
@@ -228,7 +228,7 @@ for (const [name] of categories) {
 
 function resetMeters() {
   for (const item of Object.values(meters)) {
-    item.value.textContent = "—";
+    item.value.textContent = "â€”";
     item.bar.style.width = "0%";
   }
 }
@@ -267,7 +267,7 @@ async function loadModel() {
       delegate: "GPU"
     },
     runningMode: "VIDEO",
-    numFaces: 1,
+    numFaces: 3,
     outputFaceBlendshapes: true,
     outputFacialTransformationMatrixes: false
   };
@@ -277,7 +277,7 @@ async function loadModel() {
       vision, options
     );
   } catch (gpuError) {
-    console.warn("GPU indisponível; usando CPU", gpuError);
+    console.warn("GPU indisponÃ­vel; usando CPU", gpuError);
     options.baseOptions.delegate = "CPU";
     landmarker = await FaceLandmarker.createFromOptions(
       vision, options
@@ -343,7 +343,7 @@ function render() {
 
     if (faces.length) {
       $("status").textContent = "Rosto detectado";
-      if ($("showMesh").checked) drawFace(faces[0]);
+      if ($("showMesh").checked) faces.forEach(drawFace);
       updateMeters(result.faceBlendshapes?.[0]);
     } else {
       $("status").textContent = "Procurando rosto";
@@ -369,7 +369,7 @@ async function startCamera() {
 
   try {
     if (!navigator.mediaDevices?.getUserMedia) {
-      throw new Error("Câmera requer HTTPS ou localhost.");
+      throw new Error("CÃ¢mera requer HTTPS ou localhost.");
     }
 
     await loadModel();
@@ -396,7 +396,7 @@ async function startCamera() {
     frames = 0;
 
     $("cameraStatus").textContent =
-      facingMode === "user" ? "Câmera frontal" : "Câmera traseira";
+      facingMode === "user" ? "CÃ¢mera frontal" : "CÃ¢mera traseira";
 
     $("flipBtn").disabled = false;
     $("stopBtn").disabled = false;
@@ -420,7 +420,7 @@ function stopCamera() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   $("faceCount").textContent = "0";
   $("fps").textContent = "0";
-  $("cameraStatus").textContent = "Câmera desligada";
+  $("cameraStatus").textContent = "CÃ¢mera desligada";
   $("flipBtn").disabled = true;
   $("stopBtn").disabled = true;
   $("startBtn").disabled = false;
@@ -430,7 +430,7 @@ function stopCamera() {
 $("startBtn").addEventListener("click", startCamera);
 $("stopBtn").addEventListener("click", () => {
   stopCamera();
-  $("status").textContent = "Câmera parada";
+  $("status").textContent = "CÃ¢mera parada";
 });
 
 $("flipBtn").addEventListener("click", async () => {
@@ -463,3 +463,8 @@ if ("serviceWorker" in navigator &&
 </script>
 </body>
 </html>
+
+
+
+
+
