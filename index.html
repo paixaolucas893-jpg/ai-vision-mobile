@@ -182,15 +182,6 @@ label { display: block; margin: 12px 0; }
   </small>
 </section>
 
-<section class="panel" id="studyPanel">
-  <details>
-    <summary style="cursor:pointer;font-weight:700">
-      📖 Estudo dos movimentos faciais
-    </summary>
-    <p>Conteúdo educativo inspirado nos estudos de Paul Ekman.</p>
-    <div id="studyCards">Carregando estudos...</div>
-  </details>
-</section>
 <section class="panel">
   <h2>Privacidade</h2>
   <small>
@@ -502,43 +493,6 @@ if ("serviceWorker" in navigator &&
   navigator.serviceWorker.register("./sw.js")
     .catch(console.warn);
 }
-async function loadStudies() {
-  const container = document.getElementById("studyCards");
-  if (!container) return;
-
-  try {
-    const response = await fetch("./estudo-ekman.json");
-    if (!response.ok) throw new Error("Falha ao carregar estudos");
-
-    const studies = await response.json();
-    container.textContent = "";
-
-    for (const study of studies) {
-      const details = document.createElement("details");
-      details.style.marginBottom = "10px";
-
-      const summary = document.createElement("summary");
-      summary.textContent = study.titulo;
-
-      const description = document.createElement("p");
-      description.textContent = study.descricao;
-
-      const explanation = document.createElement("p");
-      explanation.textContent = study.estudo;
-
-      const caution = document.createElement("small");
-      caution.textContent = study.cuidado;
-
-      details.append(summary, description, explanation, caution);
-      container.appendChild(details);
-    }
-  } catch (error) {
-    container.textContent = "Não foi possível carregar os estudos.";
-    console.warn(error);
-  }
-}
-
-loadStudies();
 </script>
 </body>
 </html>
